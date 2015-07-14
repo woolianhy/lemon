@@ -11,9 +11,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springversion>3.1.1.RELEASE</springversion>
 		<junitversion>4.12</junitversion>
+		<httpclient.version>4.5</httpclient.version>
 		<jettyVersion>8.1.7.v20120910</jettyVersion>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
