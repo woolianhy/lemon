@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.1.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	<context:component-scan base-package="com.demo.data.dao" />
+	<bean id="mySqlDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+
+		<property name="driverClass" value="${datasource.mysql.driver}" />
+		<property name="jdbcUrl" value="${datasource.mysql.url}" />
+		<property name="user" value="${datasource.mysql.user}" />
+		<property name="password" value="${datasource.mysql.password}" />
+
+		<!-- these are C3P0 properties -->
+		<property name="acquireIncrement" value="${datasource.mysql.acquireIncrement}" />
+		<property name="minPoolSize" value="${datasource.mysql.minPoolSize}" />
+		<property name="maxPoolSize" value="${datasource.mysql.maxPoolSize}" />
+		<property name="maxIdleTime" value="${datasource.mysql.maxIdleTime}" />
+		<!-- <property name="unreturnedConnectionTimeout" value="30" /> <property 
+			name="debugUnreturnedConnectionStackTraces" value="true" /> -->
+
+
+	</bean>
+
+
+
+	<bean id="mySqlSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="mySqlDataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.bangzhu.supply.chain.bean.mysql</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">${mysql.hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${mysql.hibernate.format_sql}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mySqlReadOnlySessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="mySqlDataSource" />
+		<property name="packagesToScan" value="com.mama100.site.snsec.*.domain.mysql" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">${mysql.hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${mysql.hibernate.format_sql}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mySqlJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="mySqlDataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="mySqlTxManager"
+		proxy-target-class="true" />
+	<bean id="mySqlTxManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySqlSessionFactory" />
+	</bean>
+</beans>
