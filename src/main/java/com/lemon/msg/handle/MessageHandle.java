@@ -382,7 +382,7 @@ public abstract class MessageHandle {
 		return null;
 	}
 
-	protected final BaseMsg handleTextMsg(TextReqMsg msg) {
+	protected BaseMsg handleTextMsg(TextReqMsg msg) {
 
 		String reqText = msg.getContent();
 
@@ -481,6 +481,6 @@ public abstract class MessageHandle {
 		String nonce = request.getParameter("nonce");
 		return SignUtil.checkSignature(getToken(), signature, timestamp, nonce);
 	}
-	
+
 	
 }

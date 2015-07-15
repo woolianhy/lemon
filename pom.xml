@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.lemon.wx</groupId>
-  <artifactId>WXLemon</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>WXLemon Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.lemon.wx</groupId>
+	<artifactId>WXLemon</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>WXLemon Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springversion>3.1.1.RELEASE</springversion>
 		<junitversion>4.12</junitversion>
@@ -15,6 +15,11 @@
 		<jettyVersion>8.1.7.v20120910</jettyVersion>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -214,7 +219,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jettyVersion}</version>
 				<configuration>
-                  <scanIntervalSeconds>5</scanIntervalSeconds>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/lemon</contextPath>
 					</webApp>
