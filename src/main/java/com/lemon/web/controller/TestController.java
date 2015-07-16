@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.lemon.base.annotation.OAuthRequired;
 import com.lemon.base.bean.Button;
 import com.lemon.base.bean.Menu;
 import com.lemon.base.controller.BaseController;
@@ -43,7 +44,7 @@ public class TestController extends BaseController {
 	@Autowired
 	private Gson gson;
 	
-	@Autowired
+	@OAuthRequired
 	@RequestMapping(value = { "/test1" }, method = RequestMethod.GET)
 	@ResponseBody
 	public String test(HttpServletRequest request,HttpSession session) {
