@@ -13,6 +13,16 @@ import com.lemon.msg.req.bean.BaseEvent;
 import com.lemon.msg.req.bean.BaseReqMsg;
 import com.lemon.msg.req.bean.TextReqMsg;
 
+/**
+ * 
+ * <p>
+ * 图灵机器人消息回复消息工具类
+ * </p>
+ * 
+ * 
+ *
+ * @author Chenwanli 2015年7月16日
+ */
 @Component
 public class RobotMessageHandle extends MessageHandle{
 	

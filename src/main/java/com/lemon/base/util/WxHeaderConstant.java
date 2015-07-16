@@ -1,5 +1,15 @@
 package com.lemon.base.util;
 
+/**
+ * 
+ * <p>
+ * 封装httpClient常量类
+ * </p>
+ * 
+ * 
+ *
+ * @author Chenwanli 2015年7月16日
+ */
 public class WxHeaderConstant {
 	
 	public final static String WEB_ACCEPT_XML = "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";

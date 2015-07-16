@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -14,17 +16,30 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 /**
- * http访问 封装
  * 
+ * <p>
+ * httpClient封装类
+ * </p>
+ * 
+ * 
+ *
+ * @author Chenwanli 2015年7月16日
  */
 @Component
 public class WxHttpClient {
@@ -37,7 +52,18 @@ public class WxHttpClient {
 	 * 构造方法
 	 */
 	public WxHttpClient() {
-		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+		PlainConnectionSocketFactory plainsf = PlainConnectionSocketFactory.getSocketFactory();
+		SSLContext sslContext = SSLContexts.createSystemDefault();
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+		        sslContext,
+		        NoopHostnameVerifier.INSTANCE);
+		
+		Registry<ConnectionSocketFactory> r = RegistryBuilder.<ConnectionSocketFactory>create()
+		        .register("http", plainsf)
+		        .register("https", sslsf)
+		        .build();
+		
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(r);
 		cm.setMaxTotal(CONNECTION_MAX_TOTAL);
 		cm.setDefaultMaxPerRoute(CONNECTION_MAX_PER_ROUTE);
 		httpclient = HttpClients.custom().setConnectionManager(cm).build();
@@ -54,7 +80,7 @@ public class WxHttpClient {
 
 	public String get(HttpGet httpget) throws IOException {
 		CloseableHttpResponse response = httpclient.execute(httpget);
-		return this.getResponseBodyAsString(httpget,response);
+		return this.getResponseBodyAsString(httpget, response);
 	}
 
 	public String get(Map<String, Object> headers, String url) throws IOException {
@@ -97,7 +123,7 @@ public class WxHttpClient {
 
 	public String post(HttpPost httppost) throws IOException {
 		CloseableHttpResponse response = httpclient.execute(httppost);
-		return this.getResponseBodyAsString(httppost,response);
+		return this.getResponseBodyAsString(httppost, response);
 	}
 
 	public String post(Map<String, Object> headers, String url, Map<String, Object> params)
@@ -123,7 +149,7 @@ public class WxHttpClient {
 		StringEntity reqEntity = new StringEntity(str);
 		httppost.setEntity(reqEntity);
 		CloseableHttpResponse response = httpclient.execute(httppost);
-		return this.getResponseBodyAsString(httppost,response);
+		return this.getResponseBodyAsString(httppost, response);
 	}
 
 	public String post(Map<String, Object> headers, String url, String str) throws IOException {
@@ -148,7 +174,8 @@ public class WxHttpClient {
 		return httpclient;
 	}
 
-	private String getResponseBodyAsString(HttpRequestBase httpRequestBase,CloseableHttpResponse response) throws IOException {
+	private String getResponseBodyAsString(HttpRequestBase httpRequestBase,
+			CloseableHttpResponse response) throws IOException {
 		String html = null;
 		html = EntityUtils.toString(response.getEntity());
 		response.close();
@@ -162,5 +189,10 @@ public class WxHttpClient {
 		headers.put("User-Agent", WxHeaderConstant.WEB_USER_AGENT);
 		headers.put("Accept-Encoding", WxHeaderConstant.WEB_ACCEPT_ENCODING);
 		return headers;
+	}
+
+	public String httpRequest(String requestUrl, String requestMethod, String outputStr) {
+
+		return null;
 	}
 }

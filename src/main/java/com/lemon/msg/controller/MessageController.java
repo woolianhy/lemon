@@ -10,9 +10,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lemon.base.controller.BaseController;
+import com.lemon.base.util.TokenProxy;
 import com.lemon.msg.handle.MessageHandle;
 import com.lemon.msg.handle.RobotMessageHandle;
 
+/**
+ * 
+ * <p>
+ * 微信消息自动回复
+ * </p>
+ * 
+ * 
+ *
+ * @author Chenwanli 2015年7月16日
+ */
 @Controller
 @RequestMapping("/message")
 public class MessageController extends BaseController {
@@ -23,6 +34,9 @@ public class MessageController extends BaseController {
 	@Autowired
 	@Qualifier("defaultMessageHandle")
 	private MessageHandle messageHandle;
+	
+	@Autowired
+	private TokenProxy tokenProxy;
 	
 	@Autowired
 	@Qualifier("robotMessageHandle")
@@ -38,6 +52,12 @@ public class MessageController extends BaseController {
 	@ResponseBody
 	public String replyMessage(HttpServletRequest request) {
 		return robotMessageHandle.doPost(request);
+	}
+	
+	@RequestMapping(value = { "/test" }, method = RequestMethod.GET)
+	@ResponseBody
+	public String test(HttpServletRequest request) {
+		return tokenProxy.getAccessToken().getAccess_token();
 	}
 
 }

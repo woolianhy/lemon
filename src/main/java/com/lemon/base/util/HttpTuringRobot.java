@@ -15,6 +15,16 @@ import com.lemon.msg.bean.BaseMsg;
 import com.lemon.msg.bean.NewsMsg;
 import com.lemon.msg.bean.TextMsg;
 
+/**
+ * 
+ * <p>
+ * 图灵机器人工具类
+ * </p>
+ * 
+ * 
+ *
+ * @author Chenwanli 2015年7月16日
+ */
 @Component
 public class HttpTuringRobot {
 
@@ -30,6 +40,20 @@ public class HttpTuringRobot {
 	@Autowired
 	private Gson gson;
 
+	/**
+	 * 
+	 * <p>
+	 * 获取图灵机器人的回复
+	 * </p>
+	 * 
+	 * 
+	 *
+	 * @param info  发送的内容
+	 * @param userid  发送的自定义用户id
+	 * @param loc   地区
+	 * @return
+	 * @throws IOException
+	 */
 	public String answer(String info, String userid, String loc) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		sb.append(turingUrl);
@@ -49,6 +73,20 @@ public class HttpTuringRobot {
 		return wxHttpClient.getJson(sb.toString());
 	}
 	
+	/**
+	 * 
+	 * <p>
+	 * 获取图灵机器人的回复并包装为微信Message
+	 * </p>
+	 * 
+	 * 
+	 *
+	 * @param info
+	 * @param userid
+	 * @param loc
+	 * @return
+	 * @throws IOException
+	 */
 	public BaseMsg answerMsg(String info, String userid, String loc) throws IOException {
 		String answer = answer(info, userid, loc);
 		RobotAnswer robotAnswer = gson.fromJson(answer, RobotAnswer.class);
