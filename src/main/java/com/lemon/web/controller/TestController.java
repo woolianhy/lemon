@@ -19,7 +19,7 @@ import com.lemon.base.bean.Button;
 import com.lemon.base.bean.Menu;
 import com.lemon.base.controller.BaseController;
 import com.lemon.base.util.TokenProxy;
-import com.lemon.base.util.WxHttpClient;
+import com.lemon.base.util.MyHttpClient;
 
 /**
  * 
@@ -31,7 +31,7 @@ import com.lemon.base.util.WxHttpClient;
  * @author Chenwanli 2015年7月16日
  */
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/web")
 public class TestController extends BaseController {
 
 	
@@ -39,13 +39,13 @@ public class TestController extends BaseController {
 	private TokenProxy tokenProxy;
 	
 	@Autowired
-	private WxHttpClient wxHttpClient;
+	private MyHttpClient wxHttpClient;
 	
 	@Autowired
 	private Gson gson;
 	
 	@OAuthRequired
-	@RequestMapping(value = { "/test1" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/test1.html" }, method = RequestMethod.GET)
 	@ResponseBody
 	public String test(HttpServletRequest request,HttpSession session) {
 		return "token:"+tokenProxy.getAccessToken()+" openid:"+session.getAttribute("UserId");
@@ -59,7 +59,7 @@ public class TestController extends BaseController {
 		Button b=new Button();
 		b.setName("test");
 		b.setType("view");
-		b.setUrl("http://120.25.127.129/test/test1");
+		b.setUrl("http://120.25.127.129/lemon/web/test1.html");
 		List<Button> list=new ArrayList<Button>();
 		list.add(b);
 		m.setButton(list);

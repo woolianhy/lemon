@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.google.gson.Gson;
 import com.lemon.base.bean.Oauth2AccessToken;
 import com.lemon.base.thread.TokenThread;
-import com.lemon.base.util.WxHttpClient;
+import com.lemon.base.util.MyHttpClient;
+import com.lemon.base.util.WxHttpSender;
 
 /**
  * OAuth2 处理控制器
@@ -28,27 +29,20 @@ import com.lemon.base.util.WxHttpClient;
 @Controller
 public class OAuth2Controller {
 
-	private final static Log LOG = LogFactory.getLog(TokenThread.class);
+	private final static Log LOG = LogFactory.getLog(OAuth2Controller.class);
 	
 	// 第三方用户唯一凭证
 	@Value("#{lemonCommon.appID}")
 	private String appId;
-
-	// 第三方用户唯一凭证密钥
-	@Value("#{lemonCommon.appsecret}")
-	private String appsecret;
-
-	@Value("#{lemonCommon.oauth2_access_token_url}")
-	private String oauth2_access_token_url;
 	
 	@Value("#{lemonCommon.oauth2_state}")
 	private String oauth2_state;
-	
+
 	@Autowired
 	private Gson gson;
 
 	@Autowired
-	private WxHttpClient wxHttpClient;
+	private WxHttpSender wxHttpSender;
 
 	/**
 	 * 构造参数并将请求重定向到微信API获取登录信息
@@ -61,38 +55,34 @@ public class OAuth2Controller {
 		// 此处可以添加获取持久化的数据，如企业号id等相关信息
 		String redirectUrl = "";
 		if (resultUrl != null) {
-			String reqUrl = request.getLocalAddr();
+			String reqUrl = request.getServerName();
+			reqUrl=request.getServerPort()==80?reqUrl:reqUrl+":"+request.getServerPort();
+			reqUrl+=request.getContextPath();
 			String backUrl = "http://" + reqUrl + "/oauth2url.do?oauth2url=" + resultUrl;
 			System.out.println("backUrl=" + backUrl);
 			redirectUrl = oAuth2Url(backUrl);
 		}
+		LOG.info("redirect1:" + redirectUrl);
 		return "redirect:" + redirectUrl;
 	}
 
 	
 	@RequestMapping(value = { "/oauth2url.do" })
-	public String Oauth2MeUrl(HttpServletRequest request, @RequestParam String code,
+	public String Oauth2MeUrl(HttpServletRequest request,@RequestParam String code,
 			@RequestParam String oauth2url) {
-		Oauth2AccessToken oauth2AccessToken = getUserAccessToken(code);
+		LOG.info("code:" +code);
+		Oauth2AccessToken oauth2AccessToken = wxHttpSender.getUserAccessToken(code);
 		HttpSession session = request.getSession();
 		if (oauth2AccessToken != null && oauth2AccessToken.getAccess_token() != null) {
 			session.setAttribute("UserId", oauth2AccessToken.getOpenid());
 			session.setAttribute("oauth2AccessToken", oauth2AccessToken);
+			LOG.info("UserId:" + oauth2AccessToken.getOpenid());
+			LOG.info("redirect2:" + oauth2url);
+			return "redirect:" + oauth2url;
+		}else{
+			return null;
 		}
-		return "redirect:" + oauth2url;
-	}
-
-	private Oauth2AccessToken getUserAccessToken(String code) {
-		String url=oauth2_access_token_url.replace("APPID", appId).replace("APPSECRET", appsecret).replace("CODE", code);
-    	String json=null;
-    	Oauth2AccessToken oauth2AccessToken=null;
-		try {
-			json = wxHttpClient.get(url);
-			oauth2AccessToken = gson.fromJson(json, Oauth2AccessToken.class);
-		} catch (IOException e) {
-			LOG.error("请求oauth2_token失败", e);
-		}
-    	return oauth2AccessToken;
+		
 	}
 
 	private String oAuth2Url(String redirect_uri) {

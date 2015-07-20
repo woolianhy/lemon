@@ -2,15 +2,19 @@ package com.lemon.msg.handle;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.lemon.base.controller.OAuth2Controller;
 import com.lemon.base.util.HttpTuringRobot;
 import com.lemon.msg.bean.BaseMsg;
 import com.lemon.msg.bean.TextMsg;
 import com.lemon.msg.req.bean.BaseEvent;
 import com.lemon.msg.req.bean.BaseReqMsg;
+import com.lemon.msg.req.bean.LocationEvent;
 import com.lemon.msg.req.bean.TextReqMsg;
 
 /**
@@ -31,6 +35,8 @@ public class RobotMessageHandle extends MessageHandle{
 	
 	@Autowired
 	private HttpTuringRobot httpTuringRobot;
+	
+	private final static Log LOG = LogFactory.getLog(RobotMessageHandle.class);
 
 	@Override
 	protected String getToken() {
@@ -56,6 +62,16 @@ public class RobotMessageHandle extends MessageHandle{
 		}
 		return answer;
 	}
+	
+	
+
+	@Override
+	protected BaseMsg handleLocationEvent(LocationEvent event) {
+		LOG.info(event.toXml());
+		return super.handleLocationEvent(event);
+	}
+
+
 
 	@Override
 	protected BaseMsg handleDefaultEvent(BaseEvent event) {

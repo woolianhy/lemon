@@ -29,7 +29,7 @@ import com.lemon.msg.bean.TextMsg;
 public class HttpTuringRobot {
 
 	@Autowired
-	private WxHttpClient wxHttpClient;
+	private MyHttpClient wxHttpClient;
 
 	@Value("#{lemonCommon.turingKey}")
 	private String turingKey;
@@ -145,11 +145,11 @@ public class HttpTuringRobot {
 		return null;
 	}
 
-	public WxHttpClient getWxHttpClient() {
+	public MyHttpClient getWxHttpClient() {
 		return wxHttpClient;
 	}
 
-	public void setWxHttpClient(WxHttpClient wxHttpClient) {
+	public void setWxHttpClient(MyHttpClient wxHttpClient) {
 		this.wxHttpClient = wxHttpClient;
 	}
 

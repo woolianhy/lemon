@@ -53,7 +53,10 @@
 
 	<mvc:interceptors>
 		<bean class="com.lemon.base.interceptor.AccessControlAllowOriginInterceptor" />
-		<bean class="com.lemon.base.interceptor.OAuth2Interceptor" />
+		<mvc:interceptor>  
+		  <mvc:mapping path="/web/*"/>
+		  <bean class="com.lemon.base.interceptor.OAuth2Interceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<mvc:resources mapping="/js/**" location="/js/" />

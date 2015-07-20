@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.lemon.base.util.HttpTuringRobot;
-import com.lemon.base.util.WxHttpClient;
+import com.lemon.base.util.MyHttpClient;
 import com.lemon.msg.bean.BaseMsg;
 
 public class HttpTest {
@@ -15,7 +15,7 @@ public class HttpTest {
 	public void testGetString() {
 		
 		try {
-			WxHttpClient c=new WxHttpClient();
+			MyHttpClient c=new MyHttpClient();
 //			HttpTuringRobot t=new HttpTuringRobot();
 //			t.setTuringKey("f8c3ed6e9d831d56797a3c82ebffaf7f");
 //			t.setTuringUrl("http://www.tuling123.com/openapi/api");

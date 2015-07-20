@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/lemon/js/jquery-2.0.0.min.js"></script>
+</head>
+<body>
+test
+<h1 id="test"></h1>
+<script type="text/javascript">
+  $.get("/lemon/web/test1", function(result){
+    $("#test").html(result);
+  });
+</script>
+</body>
+</html>
