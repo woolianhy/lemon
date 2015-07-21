@@ -31,5 +31,10 @@ public class EventType {
 	 * 事件类型：SCAN(扫描带参数二维码事件，用户已关注时的事件推送)
 	 */
 	public static final String SCAN = "SCAN";
+	
+	/**
+	 * 事件类型：TEMPLATESENDJOBFINISH(模板消息回复)
+	 */
+	public static final String TEMPLATESENDJOBFINISH = "TEMPLATESENDJOBFINISH";
 
 }

@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.lemon.base.controller.OAuth2Controller;
-import com.lemon.base.util.HttpTuringRobot;
+import com.lemon.base.http.HttpTuringRobot;
 import com.lemon.msg.bean.BaseMsg;
 import com.lemon.msg.bean.TextMsg;
 import com.lemon.msg.req.bean.BaseEvent;
 import com.lemon.msg.req.bean.BaseReqMsg;
 import com.lemon.msg.req.bean.LocationEvent;
+import com.lemon.msg.req.bean.MenuEvent;
+import com.lemon.msg.req.bean.TemplateFinishedEvent;
 import com.lemon.msg.req.bean.TextReqMsg;
 
 /**
@@ -67,8 +68,31 @@ public class RobotMessageHandle extends MessageHandle{
 
 	@Override
 	protected BaseMsg handleLocationEvent(LocationEvent event) {
-		LOG.info(event.toXml());
-		return super.handleLocationEvent(event);
+		LOG.info("用户id："+event.getFromUserName()+";纬度："+event.getLatitude()+";经度："+event.getLongitude()+";精确度："+event.getPrecision());
+		return null;
+	}
+
+
+
+	@Override
+	protected BaseMsg handleSubscribe(BaseEvent event) {
+		return new TextMsg("感谢您的关注！");
+	}
+
+
+
+	@Override
+	protected BaseMsg handleTemplateFinishedEvent(TemplateFinishedEvent event) {
+		LOG.info("推送给用户："+event.getFromUserName()+"的模板消息："+event.getMsgID()+"已完成，状态为："+event.getStatus());
+		return null;
+	}
+
+
+
+	@Override
+	protected BaseMsg handleMenuViewEvent(MenuEvent event) {
+		LOG.info("用户："+event.getFromUserName()+"打开了网页："+event.getEventKey());
+		return null;
 	}
 
 

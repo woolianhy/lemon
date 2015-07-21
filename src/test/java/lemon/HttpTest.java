@@ -4,10 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.google.gson.Gson;
-import com.lemon.base.util.HttpTuringRobot;
-import com.lemon.base.util.MyHttpClient;
-import com.lemon.msg.bean.BaseMsg;
+import com.lemon.base.http.MyHttpClient;
 
 public class HttpTest {
 

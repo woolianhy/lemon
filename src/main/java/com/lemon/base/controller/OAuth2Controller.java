@@ -1,6 +1,5 @@
 package com.lemon.base.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
 import com.lemon.base.bean.Oauth2AccessToken;
-import com.lemon.base.thread.TokenThread;
-import com.lemon.base.util.MyHttpClient;
-import com.lemon.base.util.WxHttpSender;
+import com.lemon.base.http.WxHttpSender;
 
 /**
  * OAuth2 处理控制器

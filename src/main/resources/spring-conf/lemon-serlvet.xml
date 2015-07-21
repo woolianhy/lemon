@@ -40,6 +40,7 @@
 	<context:component-scan base-package="com.lemon" />
 
 	<bean id="gson" class="com.google.gson.Gson"></bean>
+	<bean id="wxHttpSender" class="com.lemon.base.http.WxHttpSender"></bean>
 	<bean id="tokenProxy" class="com.lemon.base.util.TokenProxy"
 		init-method="init"></bean>
 

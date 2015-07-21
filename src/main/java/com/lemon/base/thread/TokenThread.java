@@ -1,18 +1,13 @@
 package com.lemon.base.thread;
 
-import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.lemon.base.bean.AccessToken;
-import com.lemon.base.util.MyHttpClient;
-import com.lemon.base.util.WxHttpSender;
+import com.lemon.base.http.WxHttpSender;
 
 @Component
 public class TokenThread implements Runnable {
@@ -20,6 +15,7 @@ public class TokenThread implements Runnable {
 	private final static Log LOG = LogFactory.getLog(TokenThread.class);
 
 	@Autowired
+	@Qualifier("wxHttpSender")
     private WxHttpSender wxHttpSender;
 
 	private AccessToken accessToken;

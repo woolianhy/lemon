@@ -1,4 +1,4 @@
-package com.lemon.base.util;
+package com.lemon.base.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -48,21 +48,20 @@ public class MyHttpClient {
 	private static final int CONNECTION_MAX_TOTAL = 200;
 	private static final int CONNECTION_MAX_PER_ROUTE = 20;
 
+	private String charset = "UTF-8";
+
 	/**
 	 * 构造方法
 	 */
 	public MyHttpClient() {
 		PlainConnectionSocketFactory plainsf = PlainConnectionSocketFactory.getSocketFactory();
 		SSLContext sslContext = SSLContexts.createSystemDefault();
-		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-		        sslContext,
-		        NoopHostnameVerifier.INSTANCE);
-		
-		Registry<ConnectionSocketFactory> r = RegistryBuilder.<ConnectionSocketFactory>create()
-		        .register("http", plainsf)
-		        .register("https", sslsf)
-		        .build();
-		
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
+				NoopHostnameVerifier.INSTANCE);
+
+		Registry<ConnectionSocketFactory> r = RegistryBuilder.<ConnectionSocketFactory> create()
+				.register("http", plainsf).register("https", sslsf).build();
+
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(r);
 		cm.setMaxTotal(CONNECTION_MAX_TOTAL);
 		cm.setDefaultMaxPerRoute(CONNECTION_MAX_PER_ROUTE);
@@ -91,16 +90,16 @@ public class MyHttpClient {
 
 	private String get(String url, String headerAccept) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		headers.put("Accept", headerAccept);
+		// headers.put("Accept", headerAccept);
 		return this.get(headers, url);
 	}
 
 	public String get(String url) throws IOException {
-		return this.get(url, HeaderConstant.WEB_ACCEPT_XML);
+		return this.get(url, null);
 	}
 
 	public String getJson(String url) throws IOException {
-		return this.get(url, HeaderConstant.WEB_ACCEPT_JSON);
+		return this.get(url, null);
 	}
 
 	private HttpPost setHttpPostHeaderAndParams(HttpPost httpPost, Map<String, Object> headers,
@@ -110,6 +109,7 @@ public class MyHttpClient {
 				httpPost.addHeader(entry.getKey(), entry.getValue().toString());
 			}
 		}
+
 		//
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		if (params != null && !params.isEmpty()) {
@@ -117,7 +117,7 @@ public class MyHttpClient {
 				nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
 			}
 		}
-		httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps, getCharset()));
 		return httpPost;
 	}
 
@@ -135,18 +135,18 @@ public class MyHttpClient {
 
 	public String post(String url, Map<String, Object> params) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		headers.put("Accept", HeaderConstant.WEB_ACCEPT_XML);
+		// headers.put("Accept", HeaderConstant.WEB_ACCEPT_XML);
 		return this.post(headers, url, params);
 	}
 
 	public String postJson(String url, Map<String, Object> params) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		headers.put("Accept", HeaderConstant.WEB_ACCEPT_JSON);
+		// headers.put("Accept", HeaderConstant.WEB_ACCEPT_JSON);
 		return this.post(headers, url, params);
 	}
 
 	public String post(HttpPost httppost, String str) throws IOException {
-		StringEntity reqEntity = new StringEntity(str);
+		StringEntity reqEntity = new StringEntity(str,getCharset());
 		httppost.setEntity(reqEntity);
 		CloseableHttpResponse response = httpclient.execute(httppost);
 		return this.getResponseBodyAsString(httppost, response);
@@ -160,13 +160,12 @@ public class MyHttpClient {
 
 	public String post(String url, String str) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		headers.put("Accept", HeaderConstant.WEB_ACCEPT_XML);
 		return this.post(headers, url, str);
 	}
 
 	public String postJson(String url, String str) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		headers.put("Accept", HeaderConstant.WEB_ACCEPT_JSON);
+		headers.put("Content-Type", HeaderConstant.WEB_CONTENT_TYPE_JSON);
 		return this.post(headers, url, str);
 	}
 
@@ -185,14 +184,19 @@ public class MyHttpClient {
 
 	private Map<String, Object> getCommonHeader() {
 		Map<String, Object> headers = new HashMap<String, Object>();
-		headers.put("Accept-Language", HeaderConstant.WEB_ACCEPT_LANGUAGE);
 		headers.put("User-Agent", HeaderConstant.WEB_USER_AGENT);
+		headers.put("Accept-Language", HeaderConstant.WEB_ACCEPT_LANGUAGE);
+		headers.put("Accept", HeaderConstant.WEB_ACCEPT);
 		headers.put("Accept-Encoding", HeaderConstant.WEB_ACCEPT_ENCODING);
 		return headers;
 	}
 
-	public String httpRequest(String requestUrl, String requestMethod, String outputStr) {
-
-		return null;
+	public String getCharset() {
+		return charset;
 	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
+	}
+
 }

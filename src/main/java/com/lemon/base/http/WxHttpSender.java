@@ -1,4 +1,4 @@
-package com.lemon.base.util;
+package com.lemon.base.http;
 
 import java.io.IOException;
 
@@ -12,6 +12,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lemon.base.bean.AccessToken;
 import com.lemon.base.bean.Oauth2AccessToken;
+import com.lemon.base.bean.WxTemplate;
+import com.lemon.base.bean.WxTemplateResult;
+import com.lemon.base.util.TokenProxy;
 
 /**
  * 
@@ -23,7 +26,6 @@ import com.lemon.base.bean.Oauth2AccessToken;
  *
  * @author Chenwanli 2015年7月20日
  */
-@Component
 public class WxHttpSender {
 	// 第三方用户唯一凭证
 		@Value("#{lemonCommon.appID}")
@@ -39,11 +41,18 @@ public class WxHttpSender {
 		@Value("#{lemonCommon.oauth2_access_token_url}")
 		private String oauth2_access_token_url;
 		
+		@Value("#{lemonCommon.template_send_url}")
+		private String template_send_url;
+		
 		@Value("#{lemonCommon.oauth2_state}")
 		private String oauth2_state;
 
 		@Autowired
 		private MyHttpClient wxHttpClient;
+		
+		@Autowired
+		private TokenProxy tokenProxy;
+		
 		
 		@Autowired
 		private Gson gson;
@@ -78,6 +87,20 @@ public class WxHttpSender {
 				LOG.error("请求oauth2_token失败", e);
 			}
 	    	return oauth2AccessToken;
+		}
+		
+		public WxTemplateResult sendTemplateMessage(WxTemplate wxTemplate) {
+			String url=template_send_url.replace("ACCESS_TOKEN",tokenProxy.getAccessToken().getAccess_token() );
+	    	String json=null;
+	    	WxTemplateResult wxTemplateResult=null;
+			try {
+				json = wxHttpClient.postJson(url, gson.toJson(wxTemplate));
+				wxTemplateResult = gson.fromJson(json, WxTemplateResult.class);
+				LOG.info(url+"\n"+json);
+			} catch (IOException e) {
+				LOG.error("发送微信模板消息失败", e);
+			}
+	    	return wxTemplateResult;
 		}
 		
 		

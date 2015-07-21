@@ -213,6 +213,15 @@
 	<build>
 		<finalName>lemon</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 			<!-- 添加此插件以便启动jetty -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>

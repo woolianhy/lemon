@@ -17,6 +17,7 @@ import com.lemon.msg.req.bean.LocationReqMsg;
 import com.lemon.msg.req.bean.MenuEvent;
 import com.lemon.msg.req.bean.QrCodeEvent;
 import com.lemon.msg.req.bean.ReqType;
+import com.lemon.msg.req.bean.TemplateFinishedEvent;
 import com.lemon.msg.req.bean.TextReqMsg;
 import com.lemon.msg.req.bean.VideoReqMsg;
 import com.lemon.msg.req.bean.VoiceReqMsg;
@@ -133,6 +134,14 @@ public abstract class MessageHandle {
 				buildBasicEvent(reqMap, event);
 				msg = handleLocationEvent(event);
 			}
+			//模板消息结束事件
+			else if (eventType.equals(EventType.TEMPLATESENDJOBFINISH)) {
+				String MsgID = reqMap.get("MsgID");
+				String Status = reqMap.get("Status");
+				TemplateFinishedEvent event = new TemplateFinishedEvent(MsgID, Status);
+				buildBasicEvent(reqMap, event);
+				msg = handleTemplateFinishedEvent(event);
+			}
 
 		} else {// 接受普通消息
 
@@ -204,6 +213,8 @@ public abstract class MessageHandle {
 
 	
 
+	
+
 	/**
 	 * 处理链接消息
 	 */
@@ -225,7 +236,12 @@ public abstract class MessageHandle {
 		return handleDefaultEvent(event);
 	}
 
-	
+	/**
+	 * 处理模板消息结束事件
+	 */
+	protected BaseMsg handleTemplateFinishedEvent(TemplateFinishedEvent event) {
+		return handleDefaultEvent(event);
+	}
 
 	/**
 	 * 处理点击菜单跳转链接时的事件推送
