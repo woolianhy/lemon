@@ -1,7 +1,10 @@
 package com.lemon.base.http;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +69,7 @@ public class MyHttpClient {
 		cm.setMaxTotal(CONNECTION_MAX_TOTAL);
 		cm.setDefaultMaxPerRoute(CONNECTION_MAX_PER_ROUTE);
 		httpclient = HttpClients.custom().setConnectionManager(cm).build();
+		
 	}
 
 	private HttpGet setHttpGetHeader(HttpGet httpGet, Map<String, Object> headers) {
@@ -90,7 +94,6 @@ public class MyHttpClient {
 
 	private String get(String url, String headerAccept) throws IOException {
 		Map<String, Object> headers = this.getCommonHeader();
-		// headers.put("Accept", headerAccept);
 		return this.get(headers, url);
 	}
 
@@ -176,7 +179,7 @@ public class MyHttpClient {
 	private String getResponseBodyAsString(HttpRequestBase httpRequestBase,
 			CloseableHttpResponse response) throws IOException {
 		String html = null;
-		html = EntityUtils.toString(response.getEntity());
+		html = EntityUtils.toString(response.getEntity(),getCharset());
 		response.close();
 		httpRequestBase.releaseConnection();
 		return html;

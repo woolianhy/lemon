@@ -14,6 +14,7 @@ import com.lemon.base.bean.AccessToken;
 import com.lemon.base.bean.Oauth2AccessToken;
 import com.lemon.base.bean.WxTemplate;
 import com.lemon.base.bean.WxTemplateResult;
+import com.lemon.base.bean.WxUserInfo;
 import com.lemon.base.util.TokenProxy;
 
 /**
@@ -43,6 +44,9 @@ public class WxHttpSender {
 		
 		@Value("#{lemonCommon.template_send_url}")
 		private String template_send_url;
+		
+		@Value("#{lemonCommon.get_user_info_url}")
+		private String get_user_info_url;
 		
 		@Value("#{lemonCommon.oauth2_state}")
 		private String oauth2_state;
@@ -101,6 +105,20 @@ public class WxHttpSender {
 				LOG.error("发送微信模板消息失败", e);
 			}
 	    	return wxTemplateResult;
+		}
+		
+		public WxUserInfo getUserInfo(String openId) {
+			String url=get_user_info_url.replace("ACCESS_TOKEN",tokenProxy.getAccessToken().getAccess_token() ).replace("OPENID",openId);
+	    	String json=null;
+	    	WxUserInfo wxUserInfo=null;
+			try {
+				json = wxHttpClient.getJson(url);
+				wxUserInfo = gson.fromJson(json, WxUserInfo.class);
+				LOG.info(url+"\n"+json);
+			} catch (IOException e) {
+				LOG.error("获取用户信息失败", e);
+			}
+	    	return wxUserInfo;
 		}
 		
 		

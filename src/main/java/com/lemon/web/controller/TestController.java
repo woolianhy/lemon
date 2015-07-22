@@ -23,6 +23,7 @@ import com.lemon.base.bean.Menu;
 import com.lemon.base.bean.TemplateData;
 import com.lemon.base.bean.WxTemplate;
 import com.lemon.base.bean.WxTemplateResult;
+import com.lemon.base.bean.WxUserInfo;
 import com.lemon.base.controller.BaseController;
 import com.lemon.base.http.MyHttpClient;
 import com.lemon.base.http.WxHttpSender;
@@ -114,5 +115,12 @@ public class TestController extends BaseController {
         t.setData(m); 
         WxTemplateResult sendTemplateMessage = wxHttpSender.sendTemplateMessage(t);
         return sendTemplateMessage.toString();
+	}
+	
+	@RequestMapping(value = { "/test4"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String test4(HttpServletRequest request,HttpSession session) {
+        WxUserInfo userInfo = wxHttpSender.getUserInfo("op2QbwIpeG9X4ocWklzZ50zz1Aek");
+        return userInfo.toString();
 	}
 }
