@@ -21,6 +21,7 @@ import com.lemon.base.annotation.OAuthRequired;
 import com.lemon.base.bean.Button;
 import com.lemon.base.bean.Menu;
 import com.lemon.base.bean.TemplateData;
+import com.lemon.base.bean.UnifiedOrderResult;
 import com.lemon.base.bean.WxTemplate;
 import com.lemon.base.bean.WxTemplateResult;
 import com.lemon.base.bean.WxUserInfo;
@@ -122,5 +123,12 @@ public class TestController extends BaseController {
 	public String test4(HttpServletRequest request,HttpSession session) {
         WxUserInfo userInfo = wxHttpSender.getUserInfo("op2QbwIpeG9X4ocWklzZ50zz1Aek");
         return userInfo.toString();
+	}
+	
+	@RequestMapping(value = { "/test5"}, method = RequestMethod.GET)
+	@ResponseBody
+	public UnifiedOrderResult test5(HttpServletRequest request,HttpSession session) {
+        UnifiedOrderResult unifiedorder = wxHttpSender.unifiedorder("op2QbwIpeG9X4ocWklzZ50zz1Aek", "1111111", 1);
+        return unifiedorder;
 	}
 }
