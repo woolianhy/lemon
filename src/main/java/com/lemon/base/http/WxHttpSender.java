@@ -24,6 +24,7 @@ import com.lemon.base.bean.UnifiedOrderResult;
 import com.lemon.base.bean.WxTemplate;
 import com.lemon.base.bean.WxTemplateResult;
 import com.lemon.base.bean.WxUserInfo;
+import com.lemon.base.util.JacksonUtils;
 import com.lemon.base.util.TokenProxy;
 
 /**
@@ -41,9 +42,6 @@ public class WxHttpSender {
 	@Value("#{lemonCommon.appID}")
 	private String appId;
 	
-	@Value("#{lemonCommon.zf_appID}")
-	private String zf_appID;//wx pay appId used by test
-
 	// 第三方用户唯一凭证密钥
 	@Value("#{lemonCommon.appsecret}")
 	private String appsecret;
@@ -157,7 +155,7 @@ public class WxHttpSender {
 		UnifiedOrderResult unifiedOrderResult = null;
 		try {
 			SortedMap<String, String> parameters = new TreeMap<String, String>();
-			parameters.put("appid", zf_appID);
+			parameters.put("appid", appId);
 			parameters.put("mch_id", mch_id);
 			UUID uuid = UUID.randomUUID();
 			parameters.put("nonce_str", UUID.randomUUID().toString().trim()
@@ -174,7 +172,8 @@ public class WxHttpSender {
 			parameters.put("sign", sign);
 			String requestXML = getRequestXml(parameters);
 
-			String json = wxHttpClient.postJson(unifiedorder_url, requestXML);
+			String xml = wxHttpClient.post(unifiedorder_url, requestXML);
+			String json = JacksonUtils.xml2json(xml);
 			unifiedOrderResult = gson.fromJson(json, UnifiedOrderResult.class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -183,6 +182,9 @@ public class WxHttpSender {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

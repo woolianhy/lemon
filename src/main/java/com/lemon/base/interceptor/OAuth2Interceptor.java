@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.lemon.base.annotation.OAuthRequired;
   
 public class OAuth2Interceptor implements HandlerInterceptor {  
+	
+	@Value("#{lemonCommon.domain_name}")
+	private String domain_name;
   
     /** 
      * 在DispatcherServlet完全处理完请求后被调用 
@@ -50,7 +54,8 @@ public class OAuth2Interceptor implements HandlerInterceptor {
             System.out.println("OAuthRequired：你的访问需要获取登录信息！");  
             Object objUid = session.getAttribute("UserId");  
             if (objUid == null) {  
-                String resultUrl = request.getRequestURL().toString();  
+//                String resultUrl = request.getRequestURL().toString();  
+                String resultUrl = domain_name+request.getRequestURI();
                 String param=request.getQueryString();  
                 if(param!=null){  
                     resultUrl+= "?" + param;  

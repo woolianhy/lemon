@@ -34,6 +34,9 @@ public class OAuth2Controller {
 	
 	@Value("#{lemonCommon.oauth2_state}")
 	private String oauth2_state;
+	
+	@Value("#{lemonCommon.domain_name}")
+	private String domain_name;
 
 	@Autowired
 	private Gson gson;
@@ -52,8 +55,9 @@ public class OAuth2Controller {
 		// 此处可以添加获取持久化的数据，如企业号id等相关信息
 		String redirectUrl = "";
 		if (resultUrl != null) {
-			String reqUrl = request.getServerName();
-			reqUrl=request.getServerPort()==80?reqUrl:reqUrl+":"+request.getServerPort();
+			String reqUrl=domain_name;
+//			String reqUrl = request.getServerName();
+//			reqUrl=request.getServerPort()==80?reqUrl:reqUrl+":"+request.getServerPort();
 			reqUrl+=request.getContextPath();
 			String backUrl = "http://" + reqUrl + "/oauth2url.do?oauth2url=" + resultUrl;
 			System.out.println("backUrl=" + backUrl);

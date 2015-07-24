@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,11 +56,14 @@ public class TestController extends BaseController {
 
 	@Autowired
 	private Gson gson;
+	
+	private final static Log LOG = LogFactory.getLog(TestController.class);
 
 	@OAuthRequired
 	@RequestMapping(value = { "/test1.html" }, method = RequestMethod.GET)
 	@ResponseBody
 	public String test(HttpServletRequest request, HttpSession session) {
+		LOG.info("token:" + tokenProxy.getAccessToken() + " openid:" + session.getAttribute("UserId"));
 		return "token:" + tokenProxy.getAccessToken() + " openid:" + session.getAttribute("UserId");
 	}
 
@@ -70,7 +75,7 @@ public class TestController extends BaseController {
 		Button b = new Button();
 		b.setName("test");
 		b.setType("view");
-		b.setUrl("http://120.25.127.129/lemon/web/test1.html");
+		b.setUrl("http://www.haoge365.com.cn/wxtest/web/test1.html");
 		List<Button> list = new ArrayList<Button>();
 		list.add(b);
 		m.setButton(list);
@@ -93,7 +98,7 @@ public class TestController extends BaseController {
 		
 		WxTemplate t = new WxTemplate();  
         t.setUrl("");  
-        t.setTouser("op2QbwIpeG9X4ocWklzZ50zz1Aek");  
+        t.setTouser("oYWlss83x5r8M-cxmpt-rjhz5IL8");  
         t.setTopcolor("#000000");  
         t.setTemplate_id("K9WP4odVocHWv5GhvCnnR2TgiBO_zNg7XZJm6m7vSeQ");  
         Map<String,TemplateData> m = new HashMap<String,TemplateData>();  
@@ -121,14 +126,14 @@ public class TestController extends BaseController {
 	@RequestMapping(value = { "/test4"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String test4(HttpServletRequest request,HttpSession session) {
-        WxUserInfo userInfo = wxHttpSender.getUserInfo("op2QbwIpeG9X4ocWklzZ50zz1Aek");
+        WxUserInfo userInfo = wxHttpSender.getUserInfo("oYWlss83x5r8M-cxmpt-rjhz5IL8");
         return userInfo.toString();
 	}
 	
 	@RequestMapping(value = { "/test5"}, method = RequestMethod.GET)
 	@ResponseBody
 	public UnifiedOrderResult test5(HttpServletRequest request,HttpSession session) {
-        UnifiedOrderResult unifiedorder = wxHttpSender.unifiedorder("op2QbwIpeG9X4ocWklzZ50zz1Aek", "1111111", 1);
+        UnifiedOrderResult unifiedorder = wxHttpSender.unifiedorder("oYWlss83x5r8M-cxmpt-rjhz5IL8", "1111111", 1);
         return unifiedorder;
 	}
 }
