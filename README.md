@@ -4,9 +4,10 @@
 自制的基于maven的SpringMVC+hibernate微信公众号平台
 
 1.基于多公众号配置
- lemon-serlvet.xml中 可以配置多个微信配置，请见customerWxConfig bean
+ lemon-serlvet.xml中 可以配置多个微信
+ 请见customerWxConfig bean
 
- 配置对应的多个微信token获取线程和token中控器，请见customerTokenThreadRunnable customerTokenProxy
+ 配置Wxconfig对应的多个微信token获取线程和token中控器，请见customerTokenThreadRunnable customerTokenProxy
 
 	
 2.微信自动回复 以customer公众号配置为例
