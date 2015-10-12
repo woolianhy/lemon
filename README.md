@@ -1,5 +1,5 @@
-# lemon
-微信SpringMVC开发
+
+#微信SpringMVC开发
 
 自制的基于maven的SpringMVC+hibernate微信公众号平台
 
