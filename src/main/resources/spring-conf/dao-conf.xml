@@ -18,10 +18,18 @@
 	<bean id="mySqlDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 
+		<!-- mysql 配置-->
 		<property name="driverClass" value="${datasource.mysql.driver}" />
 		<property name="jdbcUrl" value="${datasource.mysql.url}" />
 		<property name="user" value="${datasource.mysql.user}" />
-		<property name="password" value="${datasource.mysql.password}" />
+		<property name="password" value="${datasource.mysql.password}" /> 
+
+		<!-- mariadb 配置
+		
+		<property name="driverClass" value="org.mariadb.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mariadb://101.200.197.247:3306/lemon_new_born?autoReconnect=true&amp;failOverReadOnly=false&amp;useUnicode=true&amp;characterEncoding=gbk&amp;zeroDateTimeBehavior=convertToNull" />
+		<property name="user" value="root" />
+		<property name="password" value="lemon_root" />-->
 
 		<!-- these are C3P0 properties -->
 		<property name="acquireIncrement" value="${datasource.mysql.acquireIncrement}" />
@@ -30,8 +38,8 @@
 		<property name="maxIdleTime" value="${datasource.mysql.maxIdleTime}" />
 		<!-- <property name="unreturnedConnectionTimeout" value="30" /> <property 
 			name="debugUnreturnedConnectionStackTraces" value="true" /> -->
-
-
+			
+		
 	</bean>
 
 
@@ -41,7 +49,7 @@
 		<property name="dataSource" ref="mySqlDataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.bangzhu.supply.chain.bean.mysql</value>
+				<value>com.lemon</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

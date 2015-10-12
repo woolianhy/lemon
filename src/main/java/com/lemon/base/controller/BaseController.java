@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.lemon.base.Exception.WeChatException;
+
 /**
  * 
  * <p>
@@ -26,6 +28,14 @@ public abstract class BaseController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		return new ResponseEntity<String>(ex.getMessage(), responseHeaders, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(WeChatException.class)
+	public ResponseEntity<String> handleWeChatException(Throwable ex) {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		LOG.error(ex.getMessage());
+		return new ResponseEntity<String>("微信服务器异常！", responseHeaders, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler({ RuntimeException.class })

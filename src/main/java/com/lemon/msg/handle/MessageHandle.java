@@ -4,6 +4,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.lemon.msg.bean.BaseMsg;
 import com.lemon.msg.bean.TextMsg;
 import com.lemon.msg.req.bean.BaseEvent;
@@ -23,6 +26,7 @@ import com.lemon.msg.req.bean.VideoReqMsg;
 import com.lemon.msg.req.bean.VoiceReqMsg;
 import com.lemon.msg.util.MessageUtil;
 import com.lemon.msg.util.SignUtil;
+import com.lemon.web.controller.CustomerTestController;
 
 /**
  * 
@@ -34,6 +38,8 @@ import com.lemon.msg.util.SignUtil;
  * @author Chen 2015年7月14日
  */
 public abstract class MessageHandle {
+	
+	private final static Log LOG = LogFactory.getLog(MessageHandle.class); 
     
 	/**
 	 * 该方法返回token
@@ -63,9 +69,10 @@ public abstract class MessageHandle {
 
 		if (!isLegal(request)) {
 			// 非法请求，默认不予响应
+			LOG.info("Legal:false");
 			return null;
 		}
-
+		LOG.info("Legal:true");
 		// 处理消息
 		String resp = processRequest(request);
 
@@ -82,9 +89,8 @@ public abstract class MessageHandle {
 		String fromUserName = reqMap.get("FromUserName");
 		String toUserName = reqMap.get("ToUserName");
 		String msgType = reqMap.get("MsgType");
-
+		
 		BaseMsg msg = null;// 要发送的消息
-
 		// 事件推送
 		if (msgType.equals(ReqType.EVENT)) {
 			// 事件类型
@@ -99,7 +105,7 @@ public abstract class MessageHandle {
 				msg = handleQrCodeEvent(event);
 			}
 			// 订阅
-			if (eventType.equals(EventType.SUBSCRIBE)) {
+			else if (eventType.equals(EventType.SUBSCRIBE)) {
 				BaseEvent event = new BaseEvent();
 				buildBasicEvent(reqMap, event);
 				msg = handleSubscribe(event);
@@ -200,7 +206,7 @@ public abstract class MessageHandle {
 			}
 
 		}
-
+		LOG.info("responseMsg:"+msg);
 		if (msg == null) {
 			// 回复空串是微信的规定，代表不回复
 			return "";
@@ -491,10 +497,11 @@ public abstract class MessageHandle {
 	/**
 	 * 判断请求是否来自微信服务器
 	 */
-	private boolean isLegal(HttpServletRequest request) {
+	public boolean isLegal(HttpServletRequest request) {
 		String signature = request.getParameter("signature");
 		String timestamp = request.getParameter("timestamp");
 		String nonce = request.getParameter("nonce");
+		LOG.info("token:"+getToken()+" signature:"+signature+" timestamp:"+timestamp+" nonce:"+nonce);
 		return SignUtil.checkSignature(getToken(), signature, timestamp, nonce);
 	}
 

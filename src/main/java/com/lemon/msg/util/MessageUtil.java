@@ -11,9 +11,15 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.lemon.msg.handle.MessageHandle;
+
 @SuppressWarnings("restriction")
 public class MessageUtil {
 
+	private final static Log LOG = LogFactory.getLog(MessageUtil.class); 
 	/**
 	 * 解析微信发来的请求（XML）
 	 */
@@ -35,6 +41,7 @@ public class MessageUtil {
 					if (!tagName.equals("xml")) {
 						String text = reader.getElementText();
 						map.put(tagName, text);
+						LOG.info(tagName+"="+text);
 					}
 				}
 			}

@@ -44,17 +44,38 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-
-
 	<context:component-scan base-package="com.lemon" />
 
-	<bean id="gson" class="com.google.gson.Gson"></bean>
-	<bean id="wxHttpSender" class="com.lemon.base.http.WxHttpSender"></bean>
-	<bean id="tokenProxy" class="com.lemon.base.util.TokenProxy"
-		init-method="init"></bean>
-
+	<!-- 引入配置文件 -->
 	<util:properties id="lemonCommon"
 		location="classpath:/properties/wx.properties" />
+
+	<bean id="gson" class="com.google.gson.Gson"></bean>
+
+	<!-- 公众号配置，可以配置多个 -->
+	<bean id="customerWxConfig" class="com.lemon.base.config.WxConfigImpl">
+		<property name="appId" value="#{lemonCommon.customerAppID}"></property>
+		<property name="appsecret" value="#{lemonCommon.customerAppsecret}"></property>
+		<property name="mch_id" value="#{lemonCommon.customerMch_id}"></property>
+		<property name="wxzf_key" value="#{lemonCommon.customerWxzf_key}"></property>
+		<property name="notify_url" value="#{lemonCommon.customerNotify_url}"></property>
+		<property name="token" value="#{lemonCommon.customerToken}"></property>
+		<property name="subsribeReplyText" value="#{lemonCommon.customerSubsribeReplyText}"></property>
+		<property name="tokenProxy" ref="customerTokenProxy"></property>
+	</bean>
+
+	<!-- 公众号token中控器，需要注入微信配置 -->
+	<bean id="customerTokenThreadRunnable" class="com.lemon.base.thread.TokenThreadRunnable">
+		<property name="wxConfig" ref="customerWxConfig"></property>
+	</bean>
+
+	<!-- 公众号token代理，可以使用代理获取token -->
+	<bean id="customerTokenProxy" class="com.lemon.base.util.TokenProxyImpl">
+		<constructor-arg name="tokenThreadRunnable" ref="customerTokenThreadRunnable"></constructor-arg>
+	</bean>
+
+
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/jsp/" />
@@ -62,11 +83,14 @@
 	</bean>
 
 	<mvc:interceptors>
+		<!-- 跨域处理拦截 -->
 		<bean class="com.lemon.base.interceptor.AccessControlAllowOriginInterceptor" />
+		<!-- 定义拦截类路径为/html/oauth2/**的请求，进行oauth认证获取微信用户信息 -->
 		<mvc:interceptor>
-			<mvc:mapping path="/web/*" />
-			<bean class="com.lemon.base.interceptor.OAuth2Interceptor" />
+			<mvc:mapping path="/html/oauth2/**" />
+			<bean class="com.lemon.customer.interceptor.CustomerOAuth2Interceptor" />
 		</mvc:interceptor>
+
 	</mvc:interceptors>
 
 	<mvc:resources mapping="/js/**" location="/js/" />

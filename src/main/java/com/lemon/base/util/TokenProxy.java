@@ -1,23 +1,13 @@
 package com.lemon.base.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lemon.base.bean.token.AccessToken;
+import com.lemon.base.bean.token.JSAPITicket;
 
-import com.lemon.base.bean.AccessToken;
-import com.lemon.base.thread.TokenThread;
+public interface TokenProxy {
 
-public class TokenProxy {
- 
-	@Autowired
-	private TokenThread tokenThread;
-	
-	public void init() {
-		new Thread(tokenThread).start();
-		System.out.println("tokenProxy init...");
-	}
-	
-	public AccessToken getAccessToken(){
-		
-		return tokenThread.getAccessToken();
-		
-	}
+	public AccessToken getAccessToken();
+
+	public void initAccessToken();
+
+	public JSAPITicket getJsapiTicket();
 }

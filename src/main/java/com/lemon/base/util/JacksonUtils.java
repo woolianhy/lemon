@@ -70,7 +70,7 @@ public class JacksonUtils {
 		List<Map<String, Object>> list = objectMapper.readValue(jsonArrayStr,
 				new TypeReference<List<T>>() {
 				});
-		List<T> result = new ArrayList<>();
+		List<T> result = new ArrayList<T>();
 		for (Map<String, Object> map : list) {
 			result.add(map2pojo(map, clazz));
 		}

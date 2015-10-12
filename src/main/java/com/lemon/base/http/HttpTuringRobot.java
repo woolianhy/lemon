@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.lemon.base.bean.RobotAnswer;
-import com.lemon.base.bean.RobotAnswerItem;
+import com.lemon.base.bean.robot.RobotAnswer;
+import com.lemon.base.bean.robot.RobotAnswerItem;
 import com.lemon.msg.bean.Article;
 import com.lemon.msg.bean.BaseMsg;
 import com.lemon.msg.bean.NewsMsg;
