@@ -29,6 +29,11 @@ import com.lemon.base.util.TokenProxyImpl;
 import com.lemon.base.util.JacksonUtils;
 import com.lemon.base.util.SignUtil;
 
+/**
+ * 微信支付api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxPayManager extends BaseWxManager {
 
@@ -102,6 +107,12 @@ public class WxPayManager extends BaseWxManager {
 		return payResult;
 	}
 
+	/**
+	 * 查询订单是否支付
+	 * @param config
+	 * @param paymentId
+	 * @return
+	 */
 	public OrderQueryResult orderquery(WxConfig config, String paymentId) {
 		SortedMap<String, String> parameters = new TreeMap<String, String>();
 		parameters.put("appid", config.getAppId());

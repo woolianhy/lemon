@@ -17,6 +17,11 @@ import com.lemon.base.bean.qrcode.QrcodeTicketScene;
 import com.lemon.base.bean.qrcode.Ticket;
 import com.lemon.base.config.WxConfig;
 
+/**
+ * 微信二维码api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxQrcodeManager extends BaseWxManager{
 	

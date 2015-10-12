@@ -35,9 +35,6 @@ public class CustomerMessageController extends BaseController {
 	@Qualifier("customerRobotMessageHandle")
 	private MessageHandle messageHandle;
 	
-//	@Autowired
-//	@Qualifier("customerRobotMessageHandle")
-//	private CustomerRobotMessageHandle customerRobotMessageHandle;
 
 	@RequestMapping(value = { "/api" }, method = RequestMethod.GET)
 	@ResponseBody

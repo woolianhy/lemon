@@ -21,6 +21,11 @@ import com.lemon.base.bean.user.UserGroup;
 import com.lemon.base.bean.user.WxUserInfo;
 import com.lemon.base.config.WxConfig;
 
+/**
+ * 微信用户api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxUserManager extends BaseWxManager {
 

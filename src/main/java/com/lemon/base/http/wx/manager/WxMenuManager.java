@@ -10,6 +10,11 @@ import com.lemon.base.Exception.WeChatException;
 import com.lemon.base.bean.menu.Menu;
 import com.lemon.base.config.WxConfig;
 
+/**
+ * 微信菜单api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxMenuManager extends BaseWxManager{
 	

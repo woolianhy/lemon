@@ -12,6 +12,11 @@ import com.lemon.base.bean.token.AccessToken;
 import com.lemon.base.bean.token.JSAPITicket;
 import com.lemon.base.config.WxConfig;
 
+/**
+ * 微信token api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxTokenManager extends BaseWxManager{
 

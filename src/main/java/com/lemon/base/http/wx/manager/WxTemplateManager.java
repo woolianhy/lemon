@@ -11,6 +11,11 @@ import com.lemon.base.bean.template.WxTemplate;
 import com.lemon.base.bean.template.WxTemplateResult;
 import com.lemon.base.config.WxConfig;
 
+/**
+ * 微信模板消息api
+ * @author Administrator
+ *
+ */
 @Component
 public class WxTemplateManager extends BaseWxManager {
 
