@@ -32,7 +32,7 @@ public class CustomerMessageController extends BaseController {
 	// Logger.getLogger(MessageController.class);
 
 	@Autowired
-	@Qualifier("defaultMessageHandle")
+	@Qualifier("customerRobotMessageHandle")
 	private MessageHandle messageHandle;
 	
 //	@Autowired

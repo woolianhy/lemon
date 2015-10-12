@@ -21,6 +21,19 @@ public class WxConfigImpl implements WxConfig {
 
 	private String subsribeReplyText;
 
+	public WxConfigImpl(String appId, String appsecret, String mch_id,
+			String wxzf_key, String notify_url, String token,
+			 String subsribeReplyText) {
+		super();
+		this.appId = appId;
+		this.appsecret = appsecret;
+		this.mch_id = mch_id;
+		this.wxzf_key = wxzf_key;
+		this.notify_url = notify_url;
+		this.token = token;
+		this.subsribeReplyText = subsribeReplyText;
+	}
+
 	public String getAppId() {
 		return appId;
 	}

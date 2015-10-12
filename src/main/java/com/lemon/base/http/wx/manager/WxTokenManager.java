@@ -22,7 +22,7 @@ public class WxTokenManager extends BaseWxManager{
 	private final String JSAPI_TICKET_URL="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 	
 	public AccessToken getAccessToken(WxConfig config) throws WeChatException {
-		System.out.println("config:"+config);
+		System.out.println("config:"+config.getAppId()+"|"+config.getAppsecret());
 		String requestUrl = ACCESS_TOKEN_URL.replace("APPID", config.getAppId()).replace(
 				"APPSECRET", config.getAppsecret());
 		String json = null;

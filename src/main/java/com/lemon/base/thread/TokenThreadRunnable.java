@@ -28,13 +28,16 @@ public class TokenThreadRunnable implements Runnable {
 	private JSAPITicket jsapiTicket;
 
 	private long refreshTime = 0;
-	
+
+	public TokenThreadRunnable(WxConfig wxConfig) {
+		this.wxConfig = wxConfig;
+	}
 
 	public void run() {
 		while (true) {
 			try {
-				
-				//如果四分钟内刷新过，休息四分钟
+
+				// 如果四分钟内刷新过，休息四分钟
 				if (!getAllowRefresh()) {
 					Thread.sleep(4 * 60 * 1000);
 				}
@@ -78,6 +81,7 @@ public class TokenThreadRunnable implements Runnable {
 
 	/**
 	 * 根据token有效时间，获取线程休眠时间
+	 * 
 	 * @return
 	 */
 	private long getSleepTime() {
@@ -139,11 +143,8 @@ public class TokenThreadRunnable implements Runnable {
 		return new Date().getTime() - refreshTime > 4 * 60 * 1000;
 	}
 
-
 	public void setWxConfig(WxConfig wxConfig) {
 		this.wxConfig = wxConfig;
 	}
-	
-	
 
 }

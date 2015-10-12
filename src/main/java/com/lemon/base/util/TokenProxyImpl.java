@@ -10,12 +10,12 @@ public class TokenProxyImpl implements TokenProxy{
 	
 	public TokenProxyImpl(TokenThreadRunnable tokenThreadRunnable){
 		this.runnable=tokenThreadRunnable;
-		new Thread(runnable).start();
-		System.out.println("customer tokenProxy init...");
 	}
 
 	public void init() {
 		
+		new Thread(runnable).start();
+		System.out.println("customer tokenProxy init...");
 	}
 
 	public AccessToken getAccessToken() {
