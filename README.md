@@ -6,7 +6,7 @@
 1.基于多公众号配置
  lemon-serlvet.xml中 可以配置多个微信配置，com.lemon.base.config.WxConfigImpl
  
-* 公众号配置，可以配置多个 
+*公众号配置，可以配置多个 
 *customer公众号配置 
 <bean id="customerWxConfig" class="com.lemon.base.config.WxConfigImpl">
 	<constructor-arg name="appId" value="wx8181e822a15cdc22"></constructor-arg>
